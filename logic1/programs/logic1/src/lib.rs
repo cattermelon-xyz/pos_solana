@@ -1,15 +1,23 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::program::set_return_data;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("AnnhVcf5pEvuckMyQ2fwSDSCvH6mD2ehAE6hG8kCuZ9y");
 
 #[program]
-pub mod logic1 {
+mod hello_anchor {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    pub fn vote(ctx: Context<VoteParams>, option: u8) -> Result<()> {
+        set_return_data(&[option]);
+
+        msg!("Option: {}", option);
+
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
+pub struct VoteParams<'info> {
+    /// CHECK: This is not dangerous because we don't read or write from this account
+    pub owner: AccountInfo<'info>,
+}
