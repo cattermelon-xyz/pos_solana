@@ -4,7 +4,7 @@ use anchor_lang::solana_program::program::set_return_data;
 declare_id!("AnnhVcf5pEvuckMyQ2fwSDSCvH6mD2ehAE6hG8kCuZ9y");
 
 #[program]
-mod hello_anchor {
+mod logic1 {
     use super::*;
 
     pub fn vote(ctx: Context<VoteParams>, option: u8) -> Result<()> {

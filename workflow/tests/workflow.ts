@@ -1,9 +1,7 @@
 import * as anchor from "@project-serum/anchor";
 import * as web3 from "@solana/web3.js";
 import { Program } from "@project-serum/anchor";
-import { Keypair, PublicKey } from '@solana/web3.js'
 import { Workflow } from '../target/types/workflow';
-import * as buffer from "buffer";
 
 describe('workflow', async () => {
   const provider = anchor.AnchorProvider.local("https://api.devnet.solana.com");
@@ -17,10 +15,12 @@ describe('workflow', async () => {
   // console.log(keypairTest)
 
   const programId = new web3.PublicKey('ENHr4cF54EwYtc1NtfWAfmqexcDXZTxjizuXg6UPpUXv');
+  const logic1Id = new web3.PublicKey('AnnhVcf5pEvuckMyQ2fwSDSCvH6mD2ehAE6hG8kCuZ9y');
+
   let [pda, bump] = await web3.PublicKey.findProgramAddress(
     [keypair.publicKey.toBuffer()],
     programId,
-  )
+  ) 
 
   let max = new Uint8Array([1])
 
@@ -51,6 +51,13 @@ describe('workflow', async () => {
   //   }).signers([keypair]).rpc()
   // })
 
+  let option = 10
 
-
+  it("vote", async () => {
+    await workflowProgram.methods.vote(option).accounts({
+      owner: keypair.publicKey,
+      aworkflow: pda2,
+      programAccount: logic1Id
+    }).signers([keypair]).rpc()
+  })
 })
