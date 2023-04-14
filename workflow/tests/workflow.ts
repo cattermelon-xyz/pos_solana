@@ -2,6 +2,9 @@ import * as anchor from "@project-serum/anchor";
 import * as web3 from "@solana/web3.js";
 import { Program } from "@project-serum/anchor";
 import { Workflow } from '../target/types/workflow';
+import * as borsh from '@project-serum/borsh'
+import { Buffer } from "buffer";
+
 
 describe('workflow', async () => {
   const provider = anchor.AnchorProvider.local("https://api.devnet.solana.com");
@@ -51,10 +54,20 @@ describe('workflow', async () => {
   //   }).signers([keypair]).rpc()
   // })
 
-  let option = 10
+  let optionDefine = borsh.struct([
+    borsh.u8('number1'),
+    borsh.u8('number2')
+  ])
+
+  const buffer = Buffer.alloc(500)
+  optionDefine.encode({number1: 1, number2: 7}, buffer)
+
+  const instructionBuffer = buffer.slice(0, optionDefine.getSpan(buffer))
+
+  console.log(instructionBuffer)
 
   it("vote", async () => {
-    await workflowProgram.methods.vote(option).accounts({
+    await workflowProgram.methods.vote(instructionBuffer).accounts({
       owner: keypair.publicKey,
       aworkflow: pda2,
       programAccount: logic1Id

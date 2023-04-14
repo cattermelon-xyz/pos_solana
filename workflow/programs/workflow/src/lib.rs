@@ -2,6 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program::{invoke, get_return_data};
 use anchor_lang::solana_program::instruction::{Instruction, AccountMeta};
 use anchor_lang::solana_program::pubkey::Pubkey;
+use borsh::{BorshDeserialize, BorshSerialize};
 
 declare_id!("ENHr4cF54EwYtc1NtfWAfmqexcDXZTxjizuXg6UPpUXv");
 
@@ -32,7 +33,13 @@ pub mod workflow {
     }
     
 
-    pub fn vote(ctx: Context<VoteParams>, option: u8) -> Result<()>{
+    pub fn vote(ctx: Context<VoteParams>, option: Vec<u8>) -> Result<()>{
+
+        // let payload = OptionPayload::try_from_slice(&option).unwrap();
+        // msg!("Option: {:#?}", &payload);
+
+        // let serialized_payload = payload.try_to_vec().unwrap();
+        // msg!("Option: {:#?}", serialized_payload);
 
         let owner = &mut ctx.accounts.owner;
         let aworkflow = &mut ctx.accounts.aworkflow;
@@ -49,9 +56,9 @@ pub mod workflow {
         let mut accounts_2 = ctx.accounts.program_account.to_account_metas(None);
 
         let instruction_id: [u8; 8] = [227, 110, 155, 23, 136, 126, 172, 25];
-        let data_value = vec![option]; // Giá trị dữ liệu đầu vào
+        // let data_value = vec![option]; // Giá trị dữ liệu đầu vào
         let mut data = instruction_id.to_vec();
-        data.extend(data_value);
+        data.extend(option);
         
         accounts_1.append(&mut accounts_2);
         let ins = Instruction{
@@ -65,13 +72,20 @@ pub mod workflow {
             [ctx.accounts.owner.to_account_info()].as_ref(),
         )?;
         
-        let result_data = get_return_data();
+        // let result_data = get_return_data();
         aworkflow.ping += 1;
-        msg!("Result: {:?}", result_data.unwrap());
+        // msg!("Result: {:?}", result_data.unwrap());
         
         Ok(())
     }
 }
+
+// #[derive(Debug,BorshDeserialize, BorshSerialize)]
+// pub struct OptionPayload {
+//     pub number1: u8,
+//     pub number2: u8
+// }
+
 
 #[derive(Accounts)]
 // #[instruction(option: u8)]
@@ -139,5 +153,3 @@ pub struct CreateWorkflowParams<'info> {
 pub struct UserInfo {
     max: u8,
 }
-
-
