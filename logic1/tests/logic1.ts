@@ -15,11 +15,11 @@ describe("logic1", async () => {
   const logic1Program = anchor.workspace.Logic1 as Program<Logic1>;
   let option = 4;
 
-
+  const data = new Uint8Array([4, 5, 6]);
   it("test init", async () => {
     // Add your test here.
     console.log("hehe1");
-    await logic1Program.methods.vote(option).accounts({
+    await logic1Program.methods.vote(Buffer.from(data)).accounts({
       owner: keypair.publicKey,
     }).rpc()
     console.log("hehe2");

@@ -55,10 +55,11 @@ pub mod workflow {
         let mut accounts_1 = ctx.accounts.owner.to_account_metas(None);
         let mut accounts_2 = ctx.accounts.program_account.to_account_metas(None);
 
-        let instruction_id: [u8; 8] = [227, 110, 155, 23, 136, 126, 172, 25];
+        let instruction_id: [u8; 12] = [227, 110, 155, 23, 136, 126, 172, 25, option.len().try_into().unwrap(), 00, 00 , 00];
         // let data_value = vec![option]; // Giá trị dữ liệu đầu vào
         let mut data = instruction_id.to_vec();
         data.extend(option);
+        msg!("data is: {:?}", &data);
         
         accounts_1.append(&mut accounts_2);
         let ins = Instruction{
@@ -72,9 +73,9 @@ pub mod workflow {
             [ctx.accounts.owner.to_account_info()].as_ref(),
         )?;
         
-        // let result_data = get_return_data();
+        let result_data = get_return_data();
         aworkflow.ping += 1;
-        // msg!("Result: {:?}", result_data.unwrap());
+        msg!("Total: {:?}", result_data.unwrap());
         
         Ok(())
     }

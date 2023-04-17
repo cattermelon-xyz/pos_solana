@@ -64,7 +64,7 @@ describe('workflow', async () => {
 
   const instructionBuffer = buffer.slice(0, optionDefine.getSpan(buffer))
 
-  console.log(instructionBuffer)
+  console.log(instructionBuffer.length)
 
   it("vote", async () => {
     await workflowProgram.methods.vote(instructionBuffer).accounts({

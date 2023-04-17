@@ -10,7 +10,8 @@ mod logic1 {
 
     pub fn vote(ctx: Context<VoteParams>, option: Vec<u8>) -> Result<()> {
  
-        // let payload = OptionPayload::try_from_slice(&option).unwrap();
+        let payload = OptionPayload::try_from_slice(&option).unwrap();
+        let total = payload.number1 + payload.number2;
         msg!("Option: {:#?}", &option);
         //Finish for me
         // let serialized_payload = payload.try_to_vec().unwrap();
@@ -18,18 +19,18 @@ mod logic1 {
         // msg!("Option: {:#?}", &serialized_payload);
         // set_return_data(&instruction);
 
-        // set_return_data(&serialized_payload);
+        set_return_data(&[total]);
 
         Ok(())
     }
 }
 
 
-// #[derive(Debug,BorshDeserialize, BorshSerialize)]
-// pub struct OptionPayload {
-//     pub number1: u8,
-//     pub number2: u8
-// }
+#[derive(Debug,BorshDeserialize)]
+pub struct OptionPayload {
+    pub number1: u8,
+    pub number2: u8
+}
 
 #[derive(Accounts)]
 pub struct VoteParams<'info> {
