@@ -45,11 +45,6 @@ pub mod workflow {
         let aworkflow = &mut ctx.accounts.aworkflow;
         let program_account = &ctx.accounts.program_account;
         
-        let accounts = vec![
-            owner.to_account_info().clone(),
-            program_account.to_account_info().clone(),
-        ];
-        
         // Logic: 346M6ij5cXBqdVLwoHaqnGqymQKcMh8dnzi8zso1wfRm
         // Workflow: 48hv9JnQhskRVGJAouRwev7DrgKTPtirfzXBGaqmo6CH
         let mut accounts_1 = ctx.accounts.owner.to_account_metas(None);
@@ -63,7 +58,7 @@ pub mod workflow {
         
         accounts_1.append(&mut accounts_2);
         let ins = Instruction{
-               program_id: program_account.key(),
+                program_id: program_account.key(),
                 accounts: accounts_1,
                 data: data,
             };
