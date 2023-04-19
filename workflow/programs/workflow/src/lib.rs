@@ -50,9 +50,14 @@ pub mod workflow {
         let mut accounts_1 = ctx.accounts.owner.to_account_metas(None);
         let mut accounts_2 = ctx.accounts.program_account.to_account_metas(None);
 
-        let instruction_id: [u8; 12] = [227, 110, 155, 23, 136, 126, 172, 25, option.len().try_into().unwrap(), 00, 00 , 00];
+        // convert usize to u32
+        let optionLength = option.len() as u32;
+        let optionLengthBytes = optionLength.to_le_bytes();
+
+        let instruction_id: [u8; 8] = [227, 110, 155, 23, 136, 126, 172, 25];
         // let data_value = vec![option]; // Giá trị dữ liệu đầu vào
         let mut data = instruction_id.to_vec();
+        data.extend(optionLengthBytes.to_vec());
         data.extend(option);
         msg!("data is: {:?}", &data);
         
