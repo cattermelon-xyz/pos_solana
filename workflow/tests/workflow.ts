@@ -14,8 +14,6 @@ describe('workflow', async () => {
   )
   const workflowProgram = anchor.workspace.Workflow as Program<Workflow>
   console.log(keypair.publicKey.toBase58())
-  // const keypairTest = Keypair.generate()
-  // console.log(keypairTest)
 
   const programId = new web3.PublicKey('ENHr4cF54EwYtc1NtfWAfmqexcDXZTxjizuXg6UPpUXv');
   const logic1Id = new web3.PublicKey('AnnhVcf5pEvuckMyQ2fwSDSCvH6mD2ehAE6hG8kCuZ9y');
@@ -54,42 +52,37 @@ describe('workflow', async () => {
   // })
 
   //test invoke from anchor program to anchor program(logic1)
-  // let optionDefine = borsh.struct([
-  //   borsh.u8('number1'),
-  //   borsh.u8('number2')
-  // ])
+  let optionDefine = borsh.struct([
+    borsh.u8('number1'),
+    borsh.u8('number2')
+  ])
 
-  // const buffer = Buffer.alloc(500)
-  // optionDefine.encode({number1: 1, number2: 7}, buffer)
+  const buffer = Buffer.alloc(500)
+  optionDefine.encode({number1: 1, number2: 7}, buffer)
 
-  // const instructionBuffer = buffer.slice(0, optionDefine.getSpan(buffer))
+  const instructionBuffer = buffer.slice(0, optionDefine.getSpan(buffer))
 
-  // console.log(instructionBuffer.length)
-
-  // it("vote", async () => {
-  //   await workflowProgram.methods.vote(instructionBuffer).accounts({
-  //     owner: keypair.publicKey,
-  //     aworkflow: pda2,
-  //     programAccount: logic1Id
-  //   }).signers([keypair]).rpc()
-  // })
+  it("vote", async () => {
+    await workflowProgram.methods.vote(instructionBuffer).accounts({
+      owner: keypair.publicKey,
+      aworkflow: pda2,
+      programAccount: logic1Id
+    }).signers([keypair]).rpc()
+  })
   
   
   //test invoke from anchor program to native rust program(logic2)
-  let option = new Uint8Array([1, 2, 3])
+  // let option = new Uint8Array([1, 2, 3])
     
-  it("vote2", async () => {
-    await workflowProgram.methods
-      .vote2(Buffer.from(option))
-      .accounts({
-      owner: keypair.publicKey,
-      aworkflow: pda2,
-      programAccount: logic2Id
-      })
-      .signers([keypair])
-      .rpc()
-    
-    const a = await workflowProgram.account.workflow.fetch(pda2);
-    console.log(a)
-  })
+  // it("vote2", async () => {
+  //   await workflowProgram.methods
+  //     .vote2(Buffer.from(option))
+  //     .accounts({
+  //     owner: keypair.publicKey,
+  //     aworkflow: pda2,
+  //     programAccount: logic2Id
+  //     })
+  //     .signers([keypair])
+  //     .rpc()    
+  // })
 })

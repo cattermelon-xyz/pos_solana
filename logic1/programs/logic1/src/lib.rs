@@ -13,12 +13,6 @@ mod logic1 {
         let payload = OptionPayload::try_from_slice(&option).unwrap();
         let total = payload.number1 + payload.number2;
         msg!("Option: {:#?}", &option);
-        //Finish for me
-        // let serialized_payload = payload.try_to_vec().unwrap();
-
-        // msg!("Option: {:#?}", &serialized_payload);
-        // set_return_data(&instruction);
-
         set_return_data(&[total]);
 
         Ok(())
