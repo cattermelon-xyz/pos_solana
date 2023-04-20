@@ -45,16 +45,15 @@ pub mod workflow {
         let aworkflow = &mut ctx.accounts.aworkflow;
         let program_account = &ctx.accounts.program_account;
         
-        // Logic: 346M6ij5cXBqdVLwoHaqnGqymQKcMh8dnzi8zso1wfRm
-        // Workflow: 48hv9JnQhskRVGJAouRwev7DrgKTPtirfzXBGaqmo6CH
         let mut accounts_1 = ctx.accounts.owner.to_account_metas(None);
         let mut accounts_2 = ctx.accounts.program_account.to_account_metas(None);
-
+        
         // convert usize to u32
         let optionLength = option.len() as u32;
         let optionLengthBytes = optionLength.to_le_bytes();
 
         let instruction_id: [u8; 8] = [227, 110, 155, 23, 136, 126, 172, 25];
+
         // let data_value = vec![option]; // Giá trị dữ liệu đầu vào
         let mut data = instruction_id.to_vec();
         data.extend(optionLengthBytes.to_vec());
@@ -67,6 +66,40 @@ pub mod workflow {
                 accounts: accounts_1,
                 data: data,
             };
+        
+        invoke(
+            &ins,
+            [ctx.accounts.owner.to_account_info()].as_ref(),
+        )?;
+        
+        let result_data = get_return_data();
+        aworkflow.ping += 1;
+        msg!("Total: {:?}", result_data.unwrap());
+        
+        Ok(())
+    }
+
+    pub fn vote2(ctx: Context<VoteParams>, option: Vec<u8>) -> Result<()>{
+
+        // let payload = OptionPayload::try_from_slice(&option).unwrap();
+        // msg!("Option: {:#?}", &payload);
+
+        // let serialized_payload = payload.try_to_vec().unwrap();
+        // msg!("Option: {:#?}", serialized_payload);
+
+        let owner = &mut ctx.accounts.owner;
+        let aworkflow = &mut ctx.accounts.aworkflow;
+        let program_account = &ctx.accounts.program_account;
+        
+        let mut accounts_1 = ctx.accounts.owner.to_account_metas(Some(true));
+        
+        // convert usize to u32
+        
+        let ins = Instruction{
+                program_id: program_account.key(),
+                accounts: accounts_1,
+                data: option.to_vec(),
+        };
         
         invoke(
             &ins,
@@ -100,18 +133,6 @@ pub struct VoteParams<'info> {
     pub program_account: AccountInfo<'info>,
 }
 
-// // Data structures
-// #[account]
-// pub struct VoteInfo {
-//     vote_machine_address: Pubkey,
-//     option: u8,
-// }
-
-// #[account]
-// pub struct VoteData {
-//     option: u8,
-// }
-// Data validators
 #[account]
 pub struct Workflow {
     ping: u8,
