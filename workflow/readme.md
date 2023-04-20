@@ -18,6 +18,18 @@ You can find code demo here:
 
   `ping: Number of votes in a workflow.`
 
+_NOTE:_ before run (1) and (2) You need to edit key pair in 2 place:
+
+````
+1. in test/workflow.ts
+const keypair =  web3.Keypair.fromSecretKey(
+    Uint8Array.from([64,33,98,76,216,30,65,85,81,32,240,30,164,197,23,225,253,179,10,197,190,174,155,56,130,224,202,128,189,201,48,37,20,123,160,201,77,149,50,29,89,209,232,173,89,87,250,249,192,221,235,132,195,237,147,165,80,165,155,92,70,100,203,86])
+  )
+2. in terminal run ```solana config get```
+   you will see: Keypair Path: /home/trung1701/.config/solana/id.json
+   please replace keypair in id.json
+````
+
 - (3) when client interact with vote( ) function, Workflow program will invoke to Logic1 program. Logic1 program is a program built on anchor. ping++ (ping increase 1) in this workflow
 
 - (4) when client interact with vote2( ) function, Workflow program will invoke to Logic2 program. Logic2 program is a program built on native rust. ping++ (ping increase 1) in this workflow

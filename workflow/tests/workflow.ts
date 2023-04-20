@@ -10,7 +10,7 @@ describe('workflow', async () => {
   const provider = anchor.AnchorProvider.local("https://api.devnet.solana.com");
   anchor.setProvider(provider);
   const keypair =  web3.Keypair.fromSecretKey(
-    Uint8Array.from([226,37,2,35,123,147,47,122,244,62,213,197,123,40,160,147,126,68,13,60,104,70,58,233,126,239,228,59,254,191,142,46,168,9,104,9,158,127,18,6,104,44,201,175,111,13,100,80,208,156,243,41,166,103,23,23,224,12,223,70,144,2,218,191])
+    Uint8Array.from([64,33,98,76,216,30,65,85,81,32,240,30,164,197,23,225,253,179,10,197,190,174,155,56,130,224,202,128,189,201,48,37,20,123,160,201,77,149,50,29,89,209,232,173,89,87,250,249,192,221,235,132,195,237,147,165,80,165,155,92,70,100,203,86])
   )
   const workflowProgram = anchor.workspace.Workflow as Program<Workflow>
   console.log(keypair.publicKey.toBase58())
@@ -24,7 +24,7 @@ describe('workflow', async () => {
     programId,
   ) 
 
-  let max = new Uint8Array([1])
+  let max = new Uint8Array([0])
 
   let [pda2, bump2] = await web3.PublicKey.findProgramAddress(
     [keypair.publicKey.toBuffer(), max],
@@ -32,13 +32,13 @@ describe('workflow', async () => {
   )
     
 
-  //test create init user
+  // test create init user
   // it("init user", async () => {
   //   await workflowProgram.methods.initUser().accounts({
   //     owner: keypair.publicKey,
   //     userInfo: pda,
   //     systemProgram: anchor.web3.SystemProgram.programId,
-  //   }).signers([keypair]).rpc()
+  //   }).signers([keypair]).rpc({skipPreflight: true})
   // })
 
   //test create workflow
@@ -83,6 +83,6 @@ describe('workflow', async () => {
   //     programAccount: logic2Id
   //     })
   //     .signers([keypair])
-  //     .rpc()    
+  //     .rpc({skipPreflight: true})    
   // })
 })
