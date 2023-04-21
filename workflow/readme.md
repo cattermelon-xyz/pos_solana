@@ -54,7 +54,7 @@ For example, in logic1 program there is a `vote( )` function. How to make workfl
     Step 1: using sha256 for string "global:vote" and you will get the result:
     e36e9b17887eac197678a3a9928f2dfc8a1d553a698244524539ebb858a2b4d0
 
-    Step 2: Take the first 16 letters and convert to 8 bytes array
+    Step 2: Take the first 16 letters and convert hex to 8 bytes array
     e36e9b17887eac19 => [227, 110, 155, 23, 136, 126, 172, 25]
 ```
 
