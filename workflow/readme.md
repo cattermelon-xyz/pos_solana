@@ -2,9 +2,9 @@
 
 You can find code demo here:
 
-- Main program: https://github.com/hectagon-finance/pos_solana/tree/done-invoke-to-logic1/workflow
-- Invoked program: https://github.com/hectagon-finance/pos_solana/tree/done-invoke-to-logic1/logic1
-- Invoked program2: https://github.com/hectagon-finance/pos_solana/tree/done-invoke-to-logic1/logic2
+- Main program: https://github.com/hectagon-finance/pos_solana/tree/main/workflow
+- Invoked program: https://github.com/hectagon-finance/pos_solana/tree/main/logic1
+- Invoked program2: https://github.com/hectagon-finance/pos_solana/tree/main/logic2
 
 ## Our design:
 
